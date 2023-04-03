@@ -3,9 +3,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Runtime.ConstrainedExecution;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
+using static Meteo3D.Request.WebRequest;
 
 namespace Meteo3D.Request
 {
@@ -53,6 +56,74 @@ namespace Meteo3D.Request
             public double winddirection;
             public int weathercode;
             public string time;
+
+            public override string ToString()
+            {
+                switch (weathercode)
+                {
+                    case 0:
+                        return "Clear sky";
+                    case 1:
+                        return "Mainly clear";
+                    case 2:
+                        return "Partly cloudy";
+                    case 3:
+                        return "Overcast";
+                    case 45:
+                        return "Fog";
+                    case 48:
+                        return "Depositing rime fog";
+                    case 51:
+                        return "Drizzle light";
+                    case 53:
+                        return "Drizzle moderate";
+                    case 55:
+                        return "Drizzle dense";
+                    case 56:
+                        return "Freezing drizzle light";
+                    case 57:
+                        return "Freezing drizzle dense";
+                    case 61:
+                        return "Slight rain";
+                    case 63:
+                        return "Moderate rain";
+                    case 65:
+                        return "Heavy rain";
+                    case 66:
+                        return "Freezing rain";
+                    case 67:
+                        return "Heavy intensive rain";
+                    case 71:
+                        return "Light snow fall";
+                    case 73:
+                        return "Moderate snow fall";
+                    case 75:
+                        return "Heavy snow fall";
+                    case 77:
+                        return "Snow grains";
+                    case 80:
+                        return "Slight rain showers";
+                    case 81:
+                        return "Moderate rain showers";
+                    case 82:
+                        return "Violent rain showers";
+                    case 85:
+                        return "Light snow showers";
+                    case 86:
+                        return "Heavy swow showers";
+                    case 95:
+                        return "Thunderstorm";
+                    case 96:
+                        return "Thunderstorm with slight hail";
+                    case 99:
+                        return "Thunderstorm with heavy hail";
+                    default:
+                        return "Not available";
+                }
+            }
+
+
+                
         }
 
         [Serializable]
@@ -100,10 +171,12 @@ namespace Meteo3D.Request
         private void OnEnable()
         {
             TownReader.OnTownSubmitted += GetTown;
+            OnCityFound += GetWeather;
         }
         private void OnDisable()
         {
             TownReader.OnTownSubmitted -= GetTown;
+            OnCityFound -= GetWeather;
         }
         // Update is called once per frame
         void Update()
@@ -118,9 +191,9 @@ namespace Meteo3D.Request
             
         }
 
-        public void GetWeather (float lat, float longi)
+        public void GetWeather (CityInfo cityIndo)
         {
-
+            StartCoroutine(GetRequestWeather(cityIndo.results[0].latitude, cityIndo.results[0].longitude));
         }
         public IEnumerator GetRequestCity(string city)
         {
@@ -135,9 +208,11 @@ namespace Meteo3D.Request
                 string cityJSON = System.Text.Encoding.Default.GetString(result);
                 //  string cityJSON = webRequest.downloadHandler.text;
                 CityInfo cityRes = JsonUtility.FromJson<CityInfo>(cityJSON);
-                Debug.Log("City = " + cityRes.results[0].name + "//Latitude : " + cityRes.results[0].latitude + " / Longitude : " + cityRes.results[0].longitude + "");
-                OnCityFound?.Invoke(cityRes);
-               
+                //  Debug.Log("City = " + cityRes.results[0].name + "//Latitude : " + cityRes.results[0].latitude + " / Longitude : " + cityRes.results[0].longitude + "");
+                if (cityRes.results.Count > 0)
+                {
+                    OnCityFound?.Invoke(cityRes);
+                }
             }
         }
         public IEnumerator GetRequestWeather(float lat, float longi)
@@ -147,7 +222,6 @@ namespace Meteo3D.Request
             using (UnityWebRequest webRequestWeather = UnityWebRequest.Get(weatherURI))
             {
                 yield return webRequestWeather.SendWebRequest();
-
 
                 byte[] resultWeather = webRequestWeather.downloadHandler.data;
                 string weatherJSON = System.Text.Encoding.Default.GetString(resultWeather);
@@ -165,7 +239,6 @@ namespace Meteo3D.Request
                 // Request and wait for the desired page.
                 yield return webRequest.SendWebRequest();
 
-
                 byte[] result = webRequest.downloadHandler.data;
                 string cityJSON = System.Text.Encoding.Default.GetString(result);
                 //  string cityJSON = webRequest.downloadHandler.text;
@@ -176,7 +249,6 @@ namespace Meteo3D.Request
                 using (UnityWebRequest webRequestWeather = UnityWebRequest.Get(weatherURI))
                 {
                     yield return webRequestWeather.SendWebRequest();
-
 
                     byte[] resultWeather = webRequestWeather.downloadHandler.data;
                     string weatherJSON = System.Text.Encoding.Default.GetString(resultWeather);

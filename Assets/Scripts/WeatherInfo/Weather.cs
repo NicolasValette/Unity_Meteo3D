@@ -13,7 +13,5 @@ namespace Meteo3d.WeatherInfo
         Fog,
         DepositingRimeFog,
 
-    
- 
     }
 }

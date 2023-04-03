@@ -1,6 +1,7 @@
 using Meteo3D.Request;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using TMPro;
 using UnityEngine;
 
@@ -15,12 +16,16 @@ namespace Meteo3D.UI
         // Start is called before the first frame update
         void Start()
         {
-
+            _text.text= string.Empty;
         }
 
         private void OnEnable()
         {
-            
+            WebRequest.OnWeatherFound += DisplayWeather;
+        }
+        private void OnDisable()
+        {
+            WebRequest.OnWeatherFound -= DisplayWeather;
         }
         // Update is called once per frame
         void Update()
@@ -30,7 +35,8 @@ namespace Meteo3D.UI
 
         public void DisplayWeather(WebRequest.RootWeather weather)
         {
-        //    weather.current_weather
+            string weatherInfo = $"Today : {weather.current_weather.ToString()}\nTemperature : {weather.current_weather.temperature}";
+            _text.text = weatherInfo;
         }
     }
 }
