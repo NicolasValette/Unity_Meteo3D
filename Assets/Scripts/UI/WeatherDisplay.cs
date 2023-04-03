@@ -1,15 +1,16 @@
 using Meteo3D.Request;
-using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
-namespace Meteo3d.Meteo
+namespace Meteo3D.UI
 {
-    public class TownReader : MonoBehaviour
+    public class WeatherDisplay : MonoBehaviour
     {
 
-        public static event Action<string> OnTownSubmitted;
+        [SerializeField]
+        private TMP_Text _text;
 
         // Start is called before the first frame update
         void Start()
@@ -19,21 +20,17 @@ namespace Meteo3d.Meteo
 
         private void OnEnable()
         {
-            //WebRequest.OnCityFound +
+            
         }
-
         // Update is called once per frame
         void Update()
         {
 
         }
 
-        public void ReadTown(string value)
+        public void DisplayWeather(WebRequest.RootWeather weather)
         {
-            OnTownSubmitted?.Invoke(value);
+        //    weather.current_weather
         }
     }
-
-   
-
 }

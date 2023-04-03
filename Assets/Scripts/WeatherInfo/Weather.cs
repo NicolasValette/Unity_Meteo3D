@@ -4,8 +4,16 @@ using UnityEngine;
 
 namespace Meteo3d.WeatherInfo
 {
-    public class Weather
+    public enum Weather
     {
-       
+        ClearSky,
+        MailyClear,
+        PartlyCloudy,
+        Overcast,
+        Fog,
+        DepositingRimeFog,
+
+    
+ 
     }
 }
