@@ -28,19 +28,26 @@ public class GetCoordOnClick : MonoBehaviour
             GetCoordOnClick rotEarth = hit.collider.gameObject.GetComponent<GetCoordOnClick>();
             if (rotEarth != null)
             {
-                //Vector3 vect = transform.InverseTransformPoint(hit.point);
+                //BRICOLE
+                float rayon = hit.point.magnitude;
+                //Vector3 localHitPoint = transform.InverseTransformPoint(hit.point);
+                //Conversion des coordonnées cartésiennes en coordonnées sphériques
 
-                // Conversion des coordonnées cartésiennes en coordonnées sphériques
-
-                float latitude = Mathf.Acos(hit.point.y) * Mathf.Rad2Deg;
+                float latitude = Mathf.Asin(hit.point.y/rayon) * Mathf.Rad2Deg;
                 float longitude = Mathf.Atan2(hit.point.z, hit.point.x) * Mathf.Rad2Deg;
 
+                //Des ANGLES
+                //Vector3 vectllat = new Vector3(0f, hit.point.y, hit.point.z);
+                //Vector3 vectlong = new Vector3(hit.point.x, 0f, hit.point.z);
+                //float latitude = Vector3.Angle(vectllat, transform.up);
+                //float longitude = Vector3.Angle(vectlong, transform.forward);
                 // Affichage des coordonnées
 
-                Vector3 hitPoint = hit.point;
-                Vector3 localHitPoint = transform.InverseTransformPoint(hitPoint);
+                //AZIZE
+                //Vector3 hitPoint = hit.point;
+                //Vector3 localHitPoint = transform.InverseTransformPoint(hitPoint);
 
-                Vector3 normalizedHitPoint = localHitPoint.normalized;
+                //Vector3 normalizedHitPoint = localHitPoint.normalized;
 
                 //float latitude = Mathf.Asin(normalizedHitPoint.y) * Mathf.Rad2Deg;
                 //float longitude = Mathf.Atan2(normalizedHitPoint.z, normalizedHitPoint.x) * Mathf.Rad2Deg;
