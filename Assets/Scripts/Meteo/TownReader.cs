@@ -3,11 +3,16 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using static Meteo3D.Request.WebRequest;
+using static UnityEngine.Rendering.DebugUI;
 
 namespace Meteo3d.Meteo
 {
     public class TownReader : MonoBehaviour
     {
+        [SerializeField]
+        private InputField _inputField;
 
         public static event Action<string> OnTownSubmitted;
 
@@ -19,7 +24,11 @@ namespace Meteo3d.Meteo
 
         private void OnEnable()
         {
-            //WebRequest.OnCityFound +
+            WebRequest.OnCityFound += FillTown;
+        }
+        private void OnDisable()
+        {
+            WebRequest.OnCityFound -= FillTown;
         }
 
         // Update is called once per frame
@@ -27,9 +36,24 @@ namespace Meteo3d.Meteo
         {
 
         }
-
+        
         public void ReadTown(string value)
         {
+            OnTownSubmitted?.Invoke(value);
+        }
+        public void FillTown(CityInfo city)
+        {
+            Debug.Log("Result");
+            if (city.results.Count > 0)
+            {
+                _inputField.text = city.results[0].name;
+                Debug.Log("Result : " + city.results[0].name);
+            }
+        }
+
+        public void AutoComplete (string value)
+        {
+            Debug.Log("Auto complete : " + value);
             OnTownSubmitted?.Invoke(value);
         }
     }

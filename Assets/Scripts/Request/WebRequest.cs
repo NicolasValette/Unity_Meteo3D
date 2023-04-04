@@ -3,9 +3,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Runtime.ConstrainedExecution;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
 using static Meteo3D.Request.WebRequest;
@@ -186,9 +183,7 @@ namespace Meteo3D.Request
 
         public void GetTown(string city)
         {
-            
             StartCoroutine(GetRequestCity(city));
-            
         }
 
         public void GetWeather (CityInfo cityIndo)

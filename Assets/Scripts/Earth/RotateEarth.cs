@@ -28,8 +28,15 @@ namespace Meteo3D.Earth
         }
         public void RotatePlanet(WebRequest.CityInfo cityInfo)
         {
-            Vector3 euleurs = new Vector3(cityInfo.results[0].latitude * -1f, cityInfo.results[0].longitude, 0f);
-            transform.eulerAngles= euleurs;
+            Debug.Log("Rotate");
+            Vector3 euleursX = new Vector3(cityInfo.results[0].latitude * -1f, 0f, 0f);
+            Vector3 euleursY = new Vector3(0f, cityInfo.results[0].longitude, 0f);
+            transform.rotation = Quaternion.identity;
+            transform.rotation *= Quaternion.AngleAxis (cityInfo.results[0].latitude * -1f, Camera.main.transform.right);
+            transform.rotation *= Quaternion.AngleAxis(cityInfo.results[0].longitude, Camera.main.transform.up);
+
+            //transform.eulerAngles= euleursX;
+            
         }
 
 
