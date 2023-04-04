@@ -169,11 +169,13 @@ namespace Meteo3D.Request
         {
             TownReader.OnTownSubmitted += GetTown;
             OnCityFound += GetWeather;
+            GetCoordOnClick.OnClick += GetWeather;
         }
         private void OnDisable()
         {
             TownReader.OnTownSubmitted -= GetTown;
             OnCityFound -= GetWeather;
+            GetCoordOnClick.OnClick -= GetWeather;
         }
         // Update is called once per frame
         void Update()
@@ -188,8 +190,13 @@ namespace Meteo3D.Request
 
         public void GetWeather (CityInfo cityIndo)
         {
-            StartCoroutine(GetRequestWeather(cityIndo.results[0].latitude, cityIndo.results[0].longitude));
+            GetWeather(cityIndo.results[0].latitude, cityIndo.results[0].longitude);
         }
+        public void GetWeather(float latitude, float longitude)
+        {
+            StartCoroutine(GetRequestWeather(latitude, longitude));
+        }
+
         public IEnumerator GetRequestCity(string city)
         {
             string cityURI = $"https://geocoding-api.open-meteo.com/v1/search?name={city}&language=en&count=1&format=json";

@@ -43,12 +43,12 @@ namespace Meteo3d.Meteo
         }
         public void FillTown(CityInfo city)
         {
-            Debug.Log("Result");
-            if (city.results.Count > 0)
-            {
-                _inputField.text = city.results[0].name;
-                Debug.Log("Result : " + city.results[0].name);
-            }
+            //Debug.Log("Result");
+            //if (city.results.Count > 0)
+            //{
+            //    _inputField.text = city.results[0].name;
+            //    Debug.Log("Result : " + city.results[0].name);
+            //}
         }
 
         public void AutoComplete (string value)
