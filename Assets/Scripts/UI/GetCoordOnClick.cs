@@ -33,7 +33,7 @@ public class GetCoordOnClick : MonoBehaviour
                 //Vector3 localHitPoint = transform.InverseTransformPoint(hit.point);
                 //Conversion des coordonnées cartésiennes en coordonnées sphériques
 
-                float latitude = Mathf.Asin(hit.point.y/rayon) * Mathf.Rad2Deg;
+                float latitude = Mathf.Asin(hit.point.y / rayon) * Mathf.Rad2Deg;
                 float longitude = Mathf.Atan2(hit.point.z, hit.point.x) * Mathf.Rad2Deg;
 
                 //Des ANGLES
