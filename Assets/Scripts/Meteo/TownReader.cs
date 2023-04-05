@@ -20,13 +20,16 @@ namespace Meteo3d.Meteo
         [SerializeField]
         private List<GameObject> _buttons;
 
+        [SerializeField]
+        private CityLoader _cityLoader;
+
         private List<String> _autoComplete;
         public static event Action<string> OnTownSubmitted;
 
         // Start is called before the first frame update
         void Start()
         {
-            _autoComplete= new List<string>();
+            _autoComplete = new List<string>();
             _autoComplete.Add("Ma");
             _autoComplete.Add("Maq");
             _autoComplete.Add("Maracaibo");
@@ -39,7 +42,7 @@ namespace Meteo3d.Meteo
         private void OnEnable()
         {
             WebRequest.OnCityFound += FillTown;
-            
+
         }
         private void OnDisable()
         {
@@ -51,7 +54,7 @@ namespace Meteo3d.Meteo
         {
 
         }
-        
+
         public void ReadTown(string value)
         {
             OnTownSubmitted?.Invoke(value);
@@ -72,25 +75,38 @@ namespace Meteo3d.Meteo
             OnTownSubmitted?.Invoke(text.text);
         }
 
-        public void AutoComplete (string value)
+        public void AutoComplete(string value)
         {
             Debug.Log("Auto complete : " + value);
-            List<string> result = _autoComplete.Where(city => city.Contains(value, StringComparison.OrdinalIgnoreCase)).OrderBy(c => c).ToList();
-            for (int i = 0; i < _buttons.Count;i++)
+
+            // List<string> result = _autoComplete.Where(city => city.Contains(value, StringComparison.OrdinalIgnoreCase)).OrderBy(c => c).ToList();
+            if (value.Length >= 3)
             {
-                if (result.Count > i && !string.IsNullOrEmpty(value))
+                List<City> cities = _cityLoader.ListOfCities.City;
+                List<City> result2 = cities.Where(town => town.name.StartsWith(value, StringComparison.OrdinalIgnoreCase)).OrderBy(c => c.name).ToList();
+                Debug.Log("result n : " + result2.Count);
+                for (int i = 0; i < _buttons.Count; i++)
                 {
-                    _buttons[i].SetActive(true);
-                    _buttons[i].GetComponentsInChildren<TMP_Text>()[0].text = result[i];
+                    if (result2.Count > i && !string.IsNullOrEmpty(value))
+                    {
+                        _buttons[i].SetActive(true);
+                        _buttons[i].GetComponentsInChildren<TMP_Text>()[0].text = result2[i].name + ", " + result2[i].country;
+                    }
+                    else
+                    {
+                        _buttons[i].SetActive(false);
+                    }
                 }
-                else
+            }
+            else
+            {
+                for (int i = 0; i < _buttons.Count; i++)
                 {
                     _buttons[i].SetActive(false);
                 }
             }
         }
-    }
 
-   
+    }
 
 }

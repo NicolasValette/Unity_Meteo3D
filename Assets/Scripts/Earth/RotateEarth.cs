@@ -8,7 +8,8 @@ namespace Meteo3D.Earth
 {
     public class RotateEarth : MonoBehaviour
     {
-
+        [SerializeField]
+        private GameObject _cameraOffset;
         private Vector3 _mousePos;
         // Start is called before the first frame update
         void Start()
@@ -33,7 +34,7 @@ namespace Meteo3D.Earth
                 Vector2 delta = ms.delta.ReadValue();
                 
                 transform.rotation *= Quaternion.Euler(0f, -delta.x, 0f);
-               // transform.rotation *= Quaternion.Euler(0f, 0f, delta.y);
+                _cameraOffset.transform.rotation *= Quaternion.Euler(0f, 0f, -delta.y);
             }
             // transform.Rotate(0f, 0.2f, 0f);
         }
