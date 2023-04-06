@@ -24,12 +24,12 @@ namespace Meteo3D.Earth
         private void OnEnable()
         {
             WebRequest.OnCityFound += RotatePlanet;
-            WebRequest.OnWeatherFound += RotatePlanet;
+            //WebRequest.OnWeatherFound += RotatePlanet;
         }
         private void OnDisable()
         {
             WebRequest.OnCityFound -= RotatePlanet;
-            WebRequest.OnWeatherFound -= RotatePlanet;
+            //WebRequest.OnWeatherFound -= RotatePlanet;
         }
         // Update is called once per frame
         void Update()
@@ -63,6 +63,7 @@ namespace Meteo3D.Earth
             transform.rotation *= Quaternion.AngleAxis(longitude, Camera.main.transform.up);
 
             Vector3 dir = transform.position - Camera.main.transform.position;
+            Camera.main.transform.parent.rotation = Quaternion.identity;
             if (Physics.Raycast(Camera.main.transform.position, dir, out RaycastHit hit))
             {
                 OnRotate?.Invoke(hit.point);
@@ -72,7 +73,7 @@ namespace Meteo3D.Earth
             //    x : Mathf.Cos(latitude * Mathf.Deg2Rad) * Mathf.Cos(longitude * Mathf.Deg2Rad),
             //    y : radius * Mathf.Sin(latitude * Mathf.Deg2Rad),
             //    z : radius * Mathf.Cos(latitude * Mathf.Deg2Rad) * Mathf.Sin(longitude * Mathf.Deg2Rad));
-            Camera.main.transform.parent.rotation = Quaternion.identity;
+            
 
             //OnRotate?.Invoke(vect);
             

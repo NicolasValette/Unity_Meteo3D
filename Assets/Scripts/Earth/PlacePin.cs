@@ -28,5 +28,8 @@ public class PlacePin : MonoBehaviour
         Debug.Log("PLACE !!!");
         _renderer.enabled = true;
         transform.position = pos;
+        
+        transform.LookAt(transform.parent.position);
+        transform.rotation *= Quaternion.Euler(-90f, 0f, 0f);
     }
 }
