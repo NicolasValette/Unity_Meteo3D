@@ -25,8 +25,7 @@ public class GetCoordOnClick : MonoBehaviour
     {
         // Raycast pour détecter le point cliqué
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit))
+        if (Physics.Raycast(ray, out RaycastHit hit))
         {
             GetCoordOnClick rotEarth = hit.collider.gameObject.GetComponent<GetCoordOnClick>();
             if (rotEarth != null)

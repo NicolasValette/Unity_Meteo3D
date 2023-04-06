@@ -13,6 +13,8 @@ namespace Meteo3D.Earth
         private GameObject _cameraOffset;
         [SerializeField]
         private GameObject _pin;
+        [SerializeField]
+        private Transform _earthTransform;
         private Vector3 _mousePos;
 
         public static event Action<Vector3> OnRotate;
@@ -24,12 +26,12 @@ namespace Meteo3D.Earth
         private void OnEnable()
         {
             WebRequest.OnCityFound += RotatePlanet;
-            //WebRequest.OnWeatherFound += RotatePlanet;
+            WebRequest.OnWeatherFound += RotatePlanet;
         }
         private void OnDisable()
         {
             WebRequest.OnCityFound -= RotatePlanet;
-            //WebRequest.OnWeatherFound -= RotatePlanet;
+            WebRequest.OnWeatherFound -= RotatePlanet;
         }
         // Update is called once per frame
         void Update()
@@ -61,6 +63,9 @@ namespace Meteo3D.Earth
             transform.rotation = Quaternion.identity;
             transform.rotation *= Quaternion.AngleAxis(latitude * -1f, Camera.main.transform.right);
             transform.rotation *= Quaternion.AngleAxis(longitude, Camera.main.transform.up);
+
+            //transform.rotation *= Quaternion.AngleAxis(latitude * -1f, _earthTransform.right);
+            //transform.rotation *= Quaternion.AngleAxis(longitude, _earthTransform.up);
 
             Vector3 dir = transform.position - Camera.main.transform.position;
             Camera.main.transform.parent.rotation = Quaternion.identity;

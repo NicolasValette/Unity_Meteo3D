@@ -70,7 +70,7 @@ namespace Meteo3d.Meteo
                                             town => town.name.CompareTo(text.text.Split(", ")[0]) == 0 && town.country.CompareTo(text.text.Split(", ")[1]) == 0)
                                         .Select(town => new Vector2(town.lat, town.lng)).ToList();
             //OnTownSubmitted?.Invoke(text.text);
-            Debug.Log("Vector 2 : " + vec);
+            Debug.Log("Vector 2 : " + vec[0]);
             if (vec.Count > 0)
             {
                 OnCoordTownSubmitted?.Invoke(vec[0].x, vec[0].y);
