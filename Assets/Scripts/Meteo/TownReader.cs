@@ -23,20 +23,12 @@ namespace Meteo3d.Meteo
         [SerializeField]
         private CityLoader _cityLoader;
 
-        private List<String> _autoComplete;
         public static event Action<string> OnTownSubmitted;
+        public static event Action<float, float> OnCoordTownSubmitted;
 
         // Start is called before the first frame update
         void Start()
         {
-            _autoComplete = new List<string>();
-            _autoComplete.Add("Ma");
-            _autoComplete.Add("Maq");
-            _autoComplete.Add("Maracaibo");
-            _autoComplete.Add("Mars");
-            _autoComplete.Add("Marseille");
-            _autoComplete.Add("Paris");
-            _autoComplete.Add("Madrid");
         }
 
         private void OnEnable()
@@ -72,7 +64,17 @@ namespace Meteo3d.Meteo
         public void FillField(TMP_Text text)
         {
             _inputField.text = text.text;
-            OnTownSubmitted?.Invoke(text.text);
+            List<City> cities = _cityLoader.ListOfCities.City;
+            Debug.Log("latciti = " + cities[0].lat);
+            List<Vector2> vec = cities.Where(
+                                            town => town.name.CompareTo(text.text.Split(", ")[0]) == 0 && town.country.CompareTo(text.text.Split(", ")[1]) == 0)
+                                        .Select(town => new Vector2(town.lat, town.lng)).ToList();
+            //OnTownSubmitted?.Invoke(text.text);
+            Debug.Log("Vector 2 : " + vec);
+            if (vec.Count > 0)
+            {
+                OnCoordTownSubmitted?.Invoke(vec[0].x, vec[0].y);
+            }
         }
 
         public void AutoComplete(string value)

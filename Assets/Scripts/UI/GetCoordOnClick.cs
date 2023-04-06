@@ -8,6 +8,7 @@ public class GetCoordOnClick : MonoBehaviour
 {
 
     public static event Action<float, float> OnClick;
+    public static event Action<Vector3> OnClickCoord;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,6 +31,7 @@ public class GetCoordOnClick : MonoBehaviour
             GetCoordOnClick rotEarth = hit.collider.gameObject.GetComponent<GetCoordOnClick>();
             if (rotEarth != null)
             {
+                OnClickCoord?.Invoke(hit.point);
                 float rayon = hit.point.magnitude;
                 Vector3 localHitPoint = transform.InverseTransformPoint(hit.point);
 

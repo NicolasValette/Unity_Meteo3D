@@ -168,14 +168,17 @@ namespace Meteo3D.Request
         private void OnEnable()
         {
             TownReader.OnTownSubmitted += GetTown;
+            TownReader.OnCoordTownSubmitted += GetWeather;
             OnCityFound += GetWeather;
             GetCoordOnClick.OnClick += GetWeather;
+
         }
         private void OnDisable()
         {
             TownReader.OnTownSubmitted -= GetTown;
             OnCityFound -= GetWeather;
             GetCoordOnClick.OnClick -= GetWeather;
+            TownReader.OnCoordTownSubmitted += GetWeather;
         }
         // Update is called once per frame
         void Update()
