@@ -28,12 +28,14 @@ namespace Meteo3D.UI
         {
             GetCoordOnClick.OnClick += ByCoord;
             WebRequest.OnCityFound += DisplayCity;
+            WebRequest.OnFetchCityFound += DisplayCity;
             WebRequest.OnWeatherFound += DisplayWeather;
         }
         private void OnDisable()
         {
             GetCoordOnClick.OnClick -= ByCoord;
             WebRequest.OnCityFound -= DisplayCity;
+            WebRequest.OnFetchCityFound -= DisplayCity;
             WebRequest.OnWeatherFound -= DisplayWeather;
         }
         // Update is called once per frame
@@ -42,6 +44,14 @@ namespace Meteo3D.UI
 
         }
 
+        public void DisplayCity(OpenStreetData city)
+        {
+            if (city != null)
+            {
+                _city = city.address.city;
+                isByCity = true;
+            }
+        }
         public void DisplayCity(CityInfo city)
         {
             if (city != null && city.results.Count > 0)
@@ -58,7 +68,7 @@ namespace Meteo3D.UI
         public void DisplayWeather(WebRequest.RootWeather weather)
         {
             string bycity = isByCity ? "in " + _city : "at " + latlong;
-            string weatherInfo = $"Today {bycity}:\n\n {weather.current_weather.ToString()}\nTemperature : {weather.current_weather.temperature} °C";
+            string weatherInfo = $"Today {bycity}:\n\n{weather.current_weather.ToString()}\nTemperature : {weather.current_weather.temperature} °C";
             _text.text = weatherInfo;
         }
     }

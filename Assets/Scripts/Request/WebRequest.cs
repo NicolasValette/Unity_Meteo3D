@@ -120,7 +120,7 @@ namespace Meteo3D.Request
             }
 
 
-                
+
         }
 
         [Serializable]
@@ -152,11 +152,27 @@ namespace Meteo3D.Request
             public Daily daily;
         }
         #endregion
+        [Serializable]
+        public class OpenStreetData
+        {
+            public Address address;
+            public float latitude;
+            public float longitude;
+        }
+
+        [Serializable]
+        public class Address
+        {
+            public string city;
+            public string county;
+            public string country;
+        }
         private CityInfo city;
-        
+
         UnityWebRequest request;
 
         public static event Action<CityInfo> OnCityFound;
+        public static event Action<OpenStreetData> OnFetchCityFound;
         public static event Action<RootWeather> OnWeatherFound;
 
         // Start is called before the first frame update
@@ -170,13 +186,16 @@ namespace Meteo3D.Request
             TownReader.OnTownSubmitted += GetTown;
             TownReader.OnCoordTownSubmitted += GetWeather;
             OnCityFound += GetWeather;
+            OnFetchCityFound += GetWeather;
             GetCoordOnClick.OnClick += GetWeather;
+            
 
         }
         private void OnDisable()
         {
             TownReader.OnTownSubmitted -= GetTown;
             OnCityFound -= GetWeather;
+            OnFetchCityFound -= GetWeather;
             GetCoordOnClick.OnClick -= GetWeather;
             TownReader.OnCoordTownSubmitted += GetWeather;
         }
@@ -191,14 +210,19 @@ namespace Meteo3D.Request
             StartCoroutine(GetRequestCity(city));
         }
 
-        public void GetWeather (CityInfo cityIndo)
+        public void GetWeather(CityInfo cityIndo)
         {
             GetWeather(cityIndo.results[0].latitude, cityIndo.results[0].longitude);
+        }
+        public void GetWeather(OpenStreetData cityIndo)
+        {
+            GetWeather(cityIndo.latitude, cityIndo.longitude);
         }
         public void GetWeather(float latitude, float longitude)
         {
             StartCoroutine(GetRequestWeather(latitude, longitude));
         }
+  
 
         public IEnumerator GetRequestCity(string city)
         {
@@ -237,6 +261,9 @@ namespace Meteo3D.Request
                 OnWeatherFound?.Invoke(weather);
             }
         }
+
+   
+
         public IEnumerator GetRequest(string uri)
         {
             using (UnityWebRequest webRequest = UnityWebRequest.Get(uri))

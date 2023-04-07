@@ -42,15 +42,18 @@ namespace Meteo3D.Earth
             {
                 Vector2 delta = ms.delta.ReadValue();
                 
-                //transform.rotation *= Quaternion.Euler(0f, -delta.x, 0f);
-               // _cameraOffset.transform.rotation *= Quaternion.Euler(0f, 0f, -delta.y);
+               
 
                 transform.Rotate(Vector3.up * -delta.x);
                 _cameraOffset.transform.Rotate(Vector3.forward * -delta.y);
-
-                //_earthTransform.localRotation *= Quaternion.Euler(0f, 0f, -delta.y);
+                
+                Vector3 rot = _cameraOffset.transform.rotation.eulerAngles;
+                Debug.Log("avant : " + rot.z * Mathf.Deg2Rad);
+                //rot.z = Mathf.Clamp(rot.z, -50f, 50f);
+                //Debug.Log("apres : " + rot.z);
+                //_cameraOffset.transform.rotation = Quaternion.Euler(rot);
+                 
             }
-            // transform.Rotate(0f, 0.2f, 0f);
         }
         public void RotatePlanet(WebRequest.CityInfo cityInfo)
         {
