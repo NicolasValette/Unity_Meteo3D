@@ -42,8 +42,13 @@ namespace Meteo3D.Earth
             {
                 Vector2 delta = ms.delta.ReadValue();
                 
-                transform.rotation *= Quaternion.Euler(0f, -delta.x, 0f);
-                _cameraOffset.transform.rotation *= Quaternion.Euler(0f, 0f, -delta.y);
+                //transform.rotation *= Quaternion.Euler(0f, -delta.x, 0f);
+               // _cameraOffset.transform.rotation *= Quaternion.Euler(0f, 0f, -delta.y);
+
+                transform.Rotate(Vector3.up * -delta.x);
+                _cameraOffset.transform.Rotate(Vector3.forward * -delta.y);
+
+                //_earthTransform.localRotation *= Quaternion.Euler(0f, 0f, -delta.y);
             }
             // transform.Rotate(0f, 0.2f, 0f);
         }
@@ -57,18 +62,17 @@ namespace Meteo3D.Earth
         }
         public void RotatePlanet(float latitude, float longitude)
         {
-            Debug.Log("Rotate");
-            Vector3 euleursX = new Vector3(latitude * -1f, 0f, 0f);
+            Debug.Log("Rotate\nLatitude : " + latitude + "\nLongitude : " + longitude);
+            Vector3 euleursZ = new Vector3(0f, 0f, latitude);
             Vector3 euleursY = new Vector3(0f, longitude, 0f);
-            transform.rotation = Quaternion.identity;
-            transform.rotation *= Quaternion.AngleAxis(latitude * -1f, Camera.main.transform.right);
-            transform.rotation *= Quaternion.AngleAxis(longitude, Camera.main.transform.up);
 
-            //transform.rotation *= Quaternion.AngleAxis(latitude * -1f, _earthTransform.right);
-            //transform.rotation *= Quaternion.AngleAxis(longitude, _earthTransform.up);
+            transform.rotation = Quaternion.Euler(euleursY);
+            _cameraOffset.transform.rotation = Quaternion.Euler(euleursZ);
 
             Vector3 dir = transform.position - Camera.main.transform.position;
-            Camera.main.transform.parent.rotation = Quaternion.identity;
+
+           // Camera.main.transform.parent.rotation = Quaternion.identity;
+
             if (Physics.Raycast(Camera.main.transform.position, dir, out RaycastHit hit))
             {
                 OnRotate?.Invoke(hit.point);
@@ -82,11 +86,6 @@ namespace Meteo3D.Earth
 
             //OnRotate?.Invoke(vect);
             
-        }
-
-        public void turn()
-        {
-            Input.GetMouseButtonDown(1);
         }
 
         

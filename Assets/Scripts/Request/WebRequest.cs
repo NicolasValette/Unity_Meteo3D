@@ -232,8 +232,8 @@ namespace Meteo3D.Request
                 string weatherJSON = System.Text.Encoding.Default.GetString(resultWeather);
                 //string cityJSON = webRequest.downloadHandler.text;
                 RootWeather weather = JsonUtility.FromJson<RootWeather>(weatherJSON);
-                Debug.Log(weather.current_weather.weathercode);
-                Debug.Log(weather.current_weather.temperature);
+                //Debug.Log(weather.current_weather.weathercode);
+                //Debug.Log(weather.current_weather.temperature);
                 OnWeatherFound?.Invoke(weather);
             }
         }

@@ -25,7 +25,7 @@ public class PlacePin : MonoBehaviour
 
     public void Place(Vector3 pos)
     {
-        Debug.Log("PLACE !!!");
+     
         _renderer.enabled = true;
         transform.position = pos;
         
