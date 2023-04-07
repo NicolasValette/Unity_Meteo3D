@@ -27,3 +27,7 @@ Projet pédagogique d'une application 3D de météo avec les attendus suivant
 https://user-images.githubusercontent.com/88431570/230118849-b363faea-7a86-4239-b670-22acfce0dcf6.mp4
 
 
+## Testez là
+
+Vous pouvez tester l'appli ici :
+https://myoji.itch.io/3d-meteo?secret=LdUkkOTd5iosc5LBKb6abNSFlcI
