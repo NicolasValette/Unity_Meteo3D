@@ -48,7 +48,7 @@ namespace Meteo3D.Earth
                 _cameraOffset.transform.Rotate(Vector3.forward * -delta.y);
                 
                 Vector3 rot = _cameraOffset.transform.rotation.eulerAngles;
-                Debug.Log("avant : " + rot.z * Mathf.Deg2Rad);
+               
                 //rot.z = Mathf.Clamp(rot.z, -50f, 50f);
                 //Debug.Log("apres : " + rot.z);
                 //_cameraOffset.transform.rotation = Quaternion.Euler(rot);
@@ -65,7 +65,6 @@ namespace Meteo3D.Earth
         }
         public void RotatePlanet(float latitude, float longitude)
         {
-            Debug.Log("Rotate\nLatitude : " + latitude + "\nLongitude : " + longitude);
             Vector3 euleursZ = new Vector3(0f, 0f, latitude);
             Vector3 euleursY = new Vector3(0f, longitude, 0f);
 

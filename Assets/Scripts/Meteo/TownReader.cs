@@ -65,12 +65,10 @@ namespace Meteo3d.Meteo
         {
             _inputField.text = text.text;
             List<City> cities = _cityLoader.ListOfCities.City;
-            Debug.Log("latciti = " + cities[0].lat);
             List<Vector2> vec = cities.Where(
                                             town => town.name.CompareTo(text.text.Split(", ")[0]) == 0 && town.country.CompareTo(text.text.Split(", ")[1]) == 0)
                                         .Select(town => new Vector2(town.lat, town.lng)).ToList();
             //OnTownSubmitted?.Invoke(text.text);
-            Debug.Log("Vector 2 : " + vec[0]);
             if (vec.Count > 0)
             {
                 OnCoordTownSubmitted?.Invoke(vec[0].x, vec[0].y);
@@ -86,7 +84,7 @@ namespace Meteo3d.Meteo
             {
                 List<City> cities = _cityLoader.ListOfCities.City;
                 List<City> result2 = cities.Where(town => town.name.StartsWith(value, StringComparison.OrdinalIgnoreCase)).OrderBy(c => c.name).ToList();
-                Debug.Log("result n : " + result2.Count);
+               
                 for (int i = 0; i < _buttons.Count; i++)
                 {
                     if (result2.Count > i && !string.IsNullOrEmpty(value))
